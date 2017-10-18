@@ -54,14 +54,22 @@ namespace Int64 {
             };
         static readonly ISet<TokenCategory> firstOfLit =
             new HashSet<TokenCategory>() {
-                TokenCategory.BOOL,
-                TokenCategory.INT,
+                TokenCategory.TRUE,
+                TokenCategory.FALSE,
+                TokenCategory.BASE_2,
+                TokenCategory.BASE_8,
+                TokenCategory.BASE_10,
+                TokenCategory.BASE_16,
                 TokenCategory.CHARACTER
             };
         static readonly ISet<TokenCategory> firstOfLitAlt =
             new HashSet<TokenCategory>() {
-                TokenCategory.BOOL,
-                TokenCategory.INT,
+                TokenCategory.TRUE,
+                TokenCategory.FALSE,
+                TokenCategory.BASE_2,
+                TokenCategory.BASE_8,
+                TokenCategory.BASE_10,
+                TokenCategory.BASE_16,
                 TokenCategory.CHARACTER,
                 TokenCategory.STRING,
                 TokenCategory.CURLY_BRACE_LEFT
@@ -69,8 +77,12 @@ namespace Int64 {
         static readonly ISet<TokenCategory> firstOfExprPrimary =
             new HashSet<TokenCategory>() {
                 TokenCategory.IDENTIFIER,
-                TokenCategory.BOOL,
-                TokenCategory.INT,
+                TokenCategory.TRUE,
+                TokenCategory.FALSE,
+                TokenCategory.BASE_2,
+                TokenCategory.BASE_8,
+                TokenCategory.BASE_10,
+                TokenCategory.BASE_16,
                 TokenCategory.CHARACTER,
                 TokenCategory.STRING,
                 TokenCategory.CURLY_BRACE_LEFT,
@@ -122,6 +134,7 @@ namespace Int64 {
                 Expect(TokenCategory.COMMA);
                 Expect(TokenCategory.IDENTIFIER);
             }
+                    
             Expect(TokenCategory.SEMICOLON);
         }
         public void FunDef() {
@@ -151,6 +164,7 @@ namespace Int64 {
                 Expect(TokenCategory.COMMA);
                 Expect(TokenCategory.IDENTIFIER);
             }
+                    
             Expect(TokenCategory.SEMICOLON);
 
         }
@@ -194,18 +208,22 @@ namespace Int64 {
                     break;
                 case TokenCategory.BREAK:
                     Expect(TokenCategory.BREAK);
+                    
                     Expect(TokenCategory.SEMICOLON);
                     break;
                 case TokenCategory.CONTINUE:
                     Expect(TokenCategory.CONTINUE);
+                    
                     Expect(TokenCategory.SEMICOLON);
                     break;
                 case TokenCategory.RETURN:
                     Expect(TokenCategory.RETURN);
                     Expr();
+                    
                     Expect(TokenCategory.SEMICOLON);
                     break;
                 case TokenCategory.SEMICOLON:
+                    
                     Expect(TokenCategory.SEMICOLON);
                     break;
                 default:
@@ -213,8 +231,13 @@ namespace Int64 {
             }
         }
         public void Assign(){
+            
             Expect(TokenCategory.ASSIGN);
+                        
+            
+                    
             Expr();
+                    
             Expect(TokenCategory.SEMICOLON);
         }
         public void FunCall(){
@@ -227,8 +250,11 @@ namespace Int64 {
                     Expr();
                 }
             }
+            
             Expect(TokenCategory.PARENTHESIS_RIGHT);
+            
             Expect(TokenCategory.SEMICOLON);
+            
         }
         public void IfStmt(){
             Expect(TokenCategory.PARENTHESIS_LEFT);
@@ -291,19 +317,35 @@ namespace Int64 {
         }
         public void Lit(){
             switch(CurrentToken){
-                case TokenCategory.BOOL:
-                    Expect(TokenCategory.BOOL);
+                case TokenCategory.TRUE:
+                    Expect(TokenCategory.TRUE);
                     break;
-                case TokenCategory.INT:
-                    Expect(TokenCategory.INT);
+                case TokenCategory.FALSE:
+                    Expect(TokenCategory.FALSE);
+                    break;
+                case TokenCategory.BASE_2:
+                    Expect(TokenCategory.BASE_2);
+                    break;
+                case TokenCategory.BASE_8:
+                    Expect(TokenCategory.BASE_8);
+                    break;
+                case TokenCategory.BASE_10:
+                    Expect(TokenCategory.BASE_10);
+                    break;
+                case TokenCategory.BASE_16:
+                    Expect(TokenCategory.BASE_16);
                     break;
                 case TokenCategory.CHARACTER:
                     Expect(TokenCategory.CHARACTER);
                     break;
                 default:
                     throw new SyntaxError(new HashSet<TokenCategory>() {
-                        TokenCategory.BOOL,
-                        TokenCategory.INT,
+                        TokenCategory.TRUE,
+                        TokenCategory.FALSE,
+                        TokenCategory.BASE_2,
+                        TokenCategory.BASE_8,
+                        TokenCategory.BASE_10,
+                        TokenCategory.BASE_16,
                         TokenCategory.CHARACTER
                     }, tokenStream.Current);
             }
@@ -357,6 +399,7 @@ namespace Int64 {
             Expect(TokenCategory.CURLY_BRACE_RIGHT);
         }
         public void Expr(){
+            
             ExprOr();
 
             if(CurrentToken==TokenCategory.QUESTION_MARK){
@@ -546,6 +589,7 @@ namespace Int64 {
             }
         }
         public void ExprPow(){
+
             ExprUnary();
             while(CurrentToken==TokenCategory.POWER){
                 Expect(TokenCategory.POWER);
@@ -553,6 +597,7 @@ namespace Int64 {
             }
         }
         public void ExprUnary(){
+            
             if(firstOfUnary.Contains(CurrentToken)){
                 switch(CurrentToken){
                     case TokenCategory.ADDITION:
@@ -585,6 +630,7 @@ namespace Int64 {
             }
         }
         public void ExprPrimary(){
+            
             if(CurrentToken==TokenCategory.IDENTIFIER){
                 Expect(TokenCategory.IDENTIFIER);
                 if(CurrentToken==TokenCategory.PARENTHESIS_LEFT){

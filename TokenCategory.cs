@@ -63,8 +63,6 @@ namespace Int64 {
       WHITE_SPACE,
       UNKNOWN,
       IDENTIFIER,
-      EOF,
-      BOOL,
-      INT
+      EOF
     }
 }
